@@ -1,0 +1,9 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "primaryColor": "#69818D",
+        "primaryShade": { "light": 8, "dark": 8 },
+        "defaultRadius": "md",
+        "white": "#0D1F23"
+    }
+}
