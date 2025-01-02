@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "themeOverrides": {
+      "primaryColor": "#69818D",  
+      "defaultRadius": "lg",     
+      "white": "#f2f2f2",        
+      "colors": {
+          "background": "#0D1F23",  
+          "text": "#AFB3B7",        
+          "primaryColor": "#69818D" 
+      },
+      "components": {
+          "Slider": {
+              "styles": {
+                  "track": {
+                      "backgroundColor": "#69818D" 
+                  },
+                  "thumb": {
+                      "backgroundColor": "#69818D" 
+                  }
+              }
+          },
+          "Text": {
+              "defaultProps": {
+                  "color": "#AFB3B7" 
+              }
+          },
+          "Button": {
+              "defaultProps": {
+                  "color": "#69818D",  
+                  "variant": "filled"
+              }
+          }
+      }
+  }
+}
