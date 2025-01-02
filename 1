@@ -1,0 +1,105 @@
+import {
+  createTheme,
+  mergeThemeOverrides,
+  CSSVariablesResolver,
+  Button,
+  Text,
+} from "@mantine/core";
+import { ParameterSliderComponentThemeProps } from "../../components/shapediver/parameter/ParameterSliderComponent";
+import { useThemeOverrideStore } from "../../store/useThemeOverrideStore";
+
+const getAppShellSize = (size, breakpoint, defval) => {
+  if (!size) return defval;
+
+  if (typeof size === "object") {
+    switch (breakpoint) {
+      case "base":
+        return "" + (size.base ?? defval);
+      case "xs":
+        return "" + (size.xs ?? size.base ?? defval);
+      case "sm":
+        return "" + (size.sm ?? size.xs ?? size.base ?? defval);
+      case "md":
+        return "" + (size.md ?? size.sm ?? size.xs ?? size.base ?? defval);
+      case "lg":
+        return "" + (size.lg ?? size.md ?? size.sm ?? size.xs ?? defval);
+      case "xl":
+        return "" + (size.xl ?? size.lg ?? size.md ?? size.sm ?? size.xs ?? defval);
+    }
+  }
+
+  return "" + size;
+};
+
+/**
+ * Hook for getting our custom theme.
+ * Theme overrides can be set in a global store using the hook useThemeOverrideStore.
+ * @returns
+ */
+export const useCustomTheme = (props = {}) => {
+  const { globalThemeOverrides = {} } = props;
+
+  /** Base padding used globally */
+  const padding = "xs";
+
+  /**
+   * Mantine theme object: @see https://mantine.dev/theming/theme-object/
+   */
+  const defaultTheme = createTheme({
+    colors: {
+      background: "#AFB3B7", // Fondo gris claro
+      primaryColor: "#2D4A53", // Verde oscuro para botones y sliders
+      text: "#2D4A53", // Texto verde oscuro
+    },
+    other: {
+      defaultFontWeight: "400",
+    },
+    components: {
+      Button: Button.extend({
+        defaultProps: {
+          variant: "filled",
+          color: "#2D4A53", // Botones en verde oscuro
+        },
+      }),
+      Text: Text.extend({
+        defaultProps: {
+          color: "#2D4A53", // Texto en verde oscuro
+        },
+      }),
+      ParameterSliderComponent: ParameterSliderComponentThemeProps({
+        sliderWidth: "60%",
+        numberWidth: "35%",
+        color: "#2D4A53", // Sliders en verde oscuro
+      }),
+    },
+  });
+
+  const themeOverride = useThemeOverrideStore((state) => state.themeOverride);
+
+  const theme = mergeThemeOverrides(defaultTheme, globalThemeOverrides, themeOverride);
+
+  /**
+   * CSS variables for AppBuilder themes
+   * @see https://mantine.dev/styles/css-variables/
+   */
+  const resolver: CSSVariablesResolver = (theme) => ({
+    variables: {
+      "--appbuilder-background-color": "#AFB3B7", // Fondo gris claro
+      "--appbuilder-text-color": "#2D4A53", // Texto verde oscuro
+      "--appbuilder-slider-color": "#2D4A53", // Sliders verde oscuro
+    },
+    light: {
+      // Variables para temas claros
+    },
+    dark: {
+      // Variables para temas oscuros
+    },
+  });
+
+  // Incluye la versión "1.0" como requisito para ShapeDiver
+  return {
+    version: "1.0", // Obligatorio para ShapeDiver
+    theme,
+    resolver,
+  };
+};
